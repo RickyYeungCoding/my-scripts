@@ -4,7 +4,8 @@ import time
 # Function to check if a host is reachable
 def check_host(host):
     response = subprocess.run(['ping', '-c', '1', host], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    return response.returncode == 0
+    if response.returncode == 0
+    return True
 
 # Main function
 def main():
