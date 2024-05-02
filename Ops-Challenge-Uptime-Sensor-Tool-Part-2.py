@@ -19,11 +19,11 @@ def check_host_status(host):
         return "down"
 
 def main():
-    sender_email = input("Your email: ")
-    sender_password = input("Your email password: ")
-    recipient_email = input("Recipient email: ")
+    sender_email = input("rickaye07@gmail.com: ")
+    sender_password = input("Password: ")
+    recipient_email = input("Yeungho455@gmail.com: ")
 
-    hosts = {"example.com": "up", "google.com": "up"}
+    hosts = {"google.com": "up"}
 
     while True:
         for host, status in hosts.items():
