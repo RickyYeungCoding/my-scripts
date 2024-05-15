@@ -1,0 +1,59 @@
+import scapy.all as scapy
+from ipaddress import ip_network
+
+def tcp_port_range_scanner():
+    print("TCP Port Range Scanner")
+
+def icmp_ping_sweep(network):
+    net = ip_network(network, strict=False)
+    hosts = list(net.hosts())
+    
+    online_hosts = 0
+    
+    print(f"Starting")
+    
+    for ip in hosts:
+        response = scapy.sr1(scapy.IP(dst=str(ip))/scapy.ICMP(), timeout=1, verbose=False)
+        
+        if response is None:
+            print(f"{ip} is down or unresponsive.")
+        elif response.haslayer(scapy.ICMP):
+            icmp_type = response.getlayer(scapy.ICMP).type
+            icmp_code = response.getlayer(scapy.ICMP).code
+            
+            if icmp_type == 3 and icmp_code in [1, 2, 3, 9, 10, 13]:
+                print(f"{ip} is blocking traffic.")
+            else:
+                print(f"{ip} is responding.")
+                online_hosts += 1
+        else:
+            print(f"{ip} is responding.")
+            online_hosts += 1
+    
+    print(f"\nTotal online hosts: {online_hosts}")
+
+def main():
+    while True:
+        print("\nNetwork Security Tool")
+        print("1. TCP Port Range Scanner")
+        print("2. ICMP Ping Sweep")
+        print("3. Exit")
+        
+        choice = input("Enter your choice: ")
+        
+        if choice == '1':
+            tcp_port_range_scanner()
+        elif choice == '2':
+            network = input("Enter network address in CIDR notation (e.g., 10.10.0.0/24): ")
+            try:
+                icmp_ping_sweep(network)
+            except ValueError:
+                print("Wrong network address")
+        elif choice == '3':
+            print("Exit")
+            break
+        else:
+            print("Error")
+
+if __name__ == "__main__":
+    main()
